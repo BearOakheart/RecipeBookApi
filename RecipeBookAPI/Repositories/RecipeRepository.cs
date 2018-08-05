@@ -14,5 +14,10 @@ namespace RecipeBookAPI.Repositories
         {
                      
         }
+      
+        public string GetTest()
+        {
+            return "test";
+        }
     }
 }

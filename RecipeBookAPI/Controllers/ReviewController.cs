@@ -15,11 +15,11 @@ namespace RecipeBookAPI.Controllers
     [Route("api/[controller]s")]
     public class ReviewController : BaseApiController
     {
-        private IBaseRepository<Review> reviewsRepository;
+        private IReviewRepository reviewsRepository;
         // GET api/values
         #region Constuctor
         
-        public ReviewController(IBaseRepository<Review> reviews)
+        public ReviewController(IReviewRepository reviews)
         {
             this.reviewsRepository = reviews;
         }

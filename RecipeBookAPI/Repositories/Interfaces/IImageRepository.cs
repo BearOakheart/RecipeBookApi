@@ -6,7 +6,7 @@ using RecipeBookAPI.Data.Models;
 
 namespace RecipeBookAPI.Repositories.Interfaces
 {
-    interface IImageRepository : IBaseRepository<Image>
+    public interface IImageRepository : IBaseRepository<Image>
     {
 
     }

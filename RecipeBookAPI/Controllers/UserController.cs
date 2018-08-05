@@ -15,12 +15,12 @@ namespace RecipeBookAPI.Controllers
     [Route("api/[controller]s")]
     public class UserController : BaseApiController
     {
-        private IBaseRepository<ApplicationUser> usersRepository;
+        private IUserRepository repository;
 
         #region Constructor
-        public UserController(IBaseRepository<ApplicationUser> users)
+        public UserController(IUserRepository users)
         {
-            this.usersRepository = users;
+            this.repository = users;
         }
         #endregion
         
@@ -28,7 +28,7 @@ namespace RecipeBookAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var user = usersRepository.GetAll();
+            var user = repository.GetAll();
 
             return new JsonResult(
                user,
@@ -40,7 +40,7 @@ namespace RecipeBookAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
-            var user = usersRepository.GetById(id);
+            var user = repository.GetById(id);
             if (user == null)
             {
                 return NotFound(new { Error = String.Format("User ID {0} has not been found", id) });
@@ -55,18 +55,27 @@ namespace RecipeBookAPI.Controllers
         [HttpPost]
         public void Post([FromBody]string value)
         {
+
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(string id, [FromBody]string value)
         {
+
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(string id)
         {
+            var user = repository.GetById(id);
+
+            // how to determinate if user delete is true. (maybe change repository method to return boolean on success) 
+            repository.Delete(user);
+
+            return new NoContentResult();
+
         }
         #endregion
     }

@@ -8,6 +8,8 @@ using RecipeBookAPI.Repositories;
 using RecipeBookAPI.Repositories.Interfaces;
 using RecipeBookAPI.Data.Models;
 using Newtonsoft.Json;
+using RecipeBookAPI.ViewModels;
+using Mapster;
 
 namespace RecipeBookAPI.Controllers
 {
@@ -15,12 +17,12 @@ namespace RecipeBookAPI.Controllers
     [Route("api/[controller]s")]
     public class RecipeController : BaseApiController
     {
-        private IBaseRepository<Recipe> recipesRepository;
+        private IRecipeRepository repository;
 
         #region Constuctor
-        public RecipeController(IBaseRepository<Recipe> recipes)
+        public RecipeController(IRecipeRepository recipes)
         {
-            this.recipesRepository = recipes;
+            this.repository = recipes;
         }
         #endregion
 
@@ -30,10 +32,12 @@ namespace RecipeBookAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var recipes = recipesRepository.GetAll();
-
+            // get all recipes
+            var recipes = repository.GetAll();
+            
+            // return json action result with results mapped to RecipeViewModel
             return new JsonResult(
-               recipes,
+               recipes.Adapt<RecipeViewModel[]>(),
                JsonSettings);
             
             //return new string[] { "value1", "value2" };
@@ -43,18 +47,36 @@ namespace RecipeBookAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var recipe = recipesRepository.GetById(id);
+            var recipe = repository.GetById(id);
 
             return new JsonResult(
-               recipe,
+               recipe.Adapt<RecipeViewModel>(),
                JsonSettings);
             
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]RecipeViewModel model)
         {
+            if (model == null) return new StatusCodeResult(500);
+
+            var recipe = new Recipe();
+
+            // later will fetch this with token.
+            recipe.CreateUserId = "e8e664fd-4366-4823-bcf1-543eabf56f80";
+
+            recipe.Title = model.Title;
+            recipe.Description = model.Description;
+            recipe.Instructions = model.Instructions;
+            recipe.ViewCount = 1;
+            recipe.CreateDate = DateTime.Now;
+
+            repository.Insert(recipe);
+
+            return new JsonResult(recipe.Adapt<RecipeViewModel>(),
+                JsonSettings);
+
         }
 
         // PUT api/values/5

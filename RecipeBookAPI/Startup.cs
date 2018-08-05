@@ -38,7 +38,12 @@ namespace RecipeBookAPI
             // Add ApplicationDbContext
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            // todo: figure out if there is a way to register whole folder of repositories. This gets annoying if environment is massive
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));           
+            services.AddScoped(typeof(IRecipeRepository), typeof(RecipeRepository));           
+            services.AddScoped(typeof(IImageRepository), typeof(ImageRepository));           
+            services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));           
+            services.AddScoped(typeof(IUserRepository), typeof(UserRepository));           
 
         }
 

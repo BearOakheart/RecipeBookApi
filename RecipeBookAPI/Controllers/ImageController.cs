@@ -15,12 +15,12 @@ namespace RecipeBookAPI.Controllers
     [Route("api/[controller]s")]
     public class ImageController : BaseApiController
     {
-        private IBaseRepository<Image> imagesRepository;
+        private IImageRepository repository;
 
         #region Constructor
         
-        public ImageController(IBaseRepository<Image> images) {
-            this.imagesRepository = images;
+        public ImageController(IImageRepository images) {
+            this.repository = images;
         }
         #endregion
 
@@ -30,7 +30,7 @@ namespace RecipeBookAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var images = imagesRepository.GetAll();
+            var images = repository.GetAll();
 
             return new JsonResult(
                images,
@@ -42,7 +42,7 @@ namespace RecipeBookAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var image = imagesRepository.GetById(id);
+            var image = repository.GetById(id);
 
             return new JsonResult(
                image,

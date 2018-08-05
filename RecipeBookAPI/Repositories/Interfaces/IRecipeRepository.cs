@@ -9,6 +9,8 @@ namespace RecipeBookAPI.Repositories
 {
     public interface IRecipeRepository : IBaseRepository<Recipe>
     {
-        
+        IQueryable<Recipe> GetAll();
+
+        string GetTest();
     }
 }

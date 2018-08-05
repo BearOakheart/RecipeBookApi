@@ -12,6 +12,6 @@ namespace RecipeBookAPI.Repositories
 {
     public interface IUserRepository : IBaseRepository<ApplicationUser>
     {
-        
+       // void Delete(ApplicationUser entity);
     }
 }
