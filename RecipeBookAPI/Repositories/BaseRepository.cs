@@ -23,6 +23,12 @@ namespace RecipeBookAPI.Repositories
             this.dbContext.SaveChanges();
         }
 
+        public void Update(TEntity entity)
+        {
+            this.dbContext.Set<TEntity>().Update(entity);
+            this.dbContext.SaveChanges();
+        }
+
         public void Delete (TEntity entity)
         {
             this.dbContext.Set<TEntity>().Remove(entity);
